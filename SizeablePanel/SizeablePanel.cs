@@ -2,13 +2,15 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SizeablePanel {
+namespace SPanel {
     public class SizeablePanel : Panel {
-        private const int cGripSize = 15;
-        private bool resizing;
+        private const int cGripSize = 5;
+        public bool resizing = false;
+        bool dragging = false;
 
         private Point currentDragPos;
         private Point eOriginalPos;
+        private Point dragPos;
 
         enum Direction {
             Up,
@@ -37,7 +39,7 @@ namespace SizeablePanel {
                 } else if (pos.Y <= cGripSize) {                    // top right
                     Cursor = Cursors.SizeNESW;
                     myDir = Direction.UpR;
-                } else { // right
+                } else {                                            // right
                     Cursor = Cursors.SizeWE;
                     myDir = Direction.Right;
                 }
@@ -67,18 +69,37 @@ namespace SizeablePanel {
         }
 
         protected override void OnMouseDown(MouseEventArgs e) {
-            resizing = IsOnGrip(e.Location);
-            currentDragPos = e.Location;
-            eOriginalPos = e.Location;
+            if (e.Button == MouseButtons.Left) {
+                dragPos = new Point(e.X, e.Y);
+                dragging = true;
+
+                resizing = IsOnGrip(e.Location);
+                currentDragPos = e.Location;
+                dragPos = e.Location;
+            }
+            
             base.OnMouseDown(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e) {
             resizing = false;
+            dragging = false;
+            dragPos = new Point(0, 0);
             base.OnMouseUp(e);
         }
 
         protected override void OnMouseMove(MouseEventArgs e) {
+            if (dragging && !resizing) {
+                int xDragDist = e.X - dragPos.X;
+                int yDragDist = e.Y - dragPos.Y;
+
+                if (Location.X + xDragDist > 0 && Location.X + xDragDist < this.Parent.Width - Width)
+                    Left += xDragDist;
+
+                if (Location.Y + yDragDist > 0 && Location.Y + yDragDist < this.Parent.Height - Height)
+                    Top += yDragDist;
+            }
+
             if (resizing) {
                 var location = Location;
 
