@@ -12,7 +12,7 @@ namespace SPanel {
         private Point eOriginalPos;
         private Point dragPos;
 
-        enum Direction {
+        public enum Direction {
             Up,
             Down,
             Left,
@@ -21,6 +21,7 @@ namespace SPanel {
             UpL,
             DownR,
             DownL,
+            None,
         }
 
         Direction myDir;
@@ -28,7 +29,8 @@ namespace SPanel {
         public SizeablePanel() {
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.ResizeRedraw, true);
-            this.BackColor = Color.White;
+            this.BackColor = Color.Black;
+            this.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private bool IsOnGrip(Point pos) {
@@ -132,6 +134,8 @@ namespace SPanel {
                     case Direction.DownL:
                         Size = new Size(Width - (e.X - eOriginalPos.X), Height + (e.Y - currentDragPos.Y));
                         location.Offset(e.Location.X - eOriginalPos.X, 0);
+                        break;
+                    default:
                         break;
                 }
                 
