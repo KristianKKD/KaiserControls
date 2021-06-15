@@ -8,19 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SPanel {
+namespace Kaiser {
     public partial class TransparentPanel : Panel {
         private const int WS_EX_TRANSPARENT = 0x20;
 
-        public TransparentPanel() {
-            InitializeComponent();
-            SetStyle(ControlStyles.Opaque, true);
-        }
-
         public TransparentPanel(IContainer container) {
+            SetStyle(ControlStyles.Opaque, true);
             container.Add(this);
-
-            InitializeComponent();
         }
 
         public int opacity = 100;

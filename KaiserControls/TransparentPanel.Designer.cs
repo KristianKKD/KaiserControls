@@ -1,5 +1,5 @@
 ﻿
-namespace SPanel
+namespace Kaiser
 {
     partial class TransparentPanel
     {

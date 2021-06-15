@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SPanel {
+namespace Kaiser {
     public class SizeablePanel : Panel {
         private const int cGripSize = 5;
         public bool resizing = false;
