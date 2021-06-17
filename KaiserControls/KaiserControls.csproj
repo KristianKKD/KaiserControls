@@ -43,13 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CentreStick.cs">
+    <Compile Include="InfoPanel\Tracker.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomTrackbar.cs">
+    <Compile Include="Joystick\CentreStick.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="JoyBack.cs">
+    <Compile Include="InfoPanel\CustomTrackbar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Joystick\JoyBack.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -82,6 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\circle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\trackbar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tracker.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
