@@ -35,15 +35,26 @@ namespace Kaiser {
         //    }
         //}
 
-        public void UpdatePos(int posX = 0) {
-            if (posX == 0)
-                posX = Location.X;
+        public void UpdatePos(float percent = 0) {
+            try {
+                if (percent == 0)
+                    percent = percentage / 100f;
 
-            Location = new Point(posX, (int)Math.Round((myTrackbar.Height / 2f) - (Height / 2f)));
+                if (!myTrackbar.verticalMode)
+                    Location = new Point((int)Math.Round(percent * (myTrackbar.Width - Width)), (int)Math.Round((myTrackbar.Height / 2f) - (Height / 2f)));
+                else
+                    Location = new Point((int)Math.Round((myTrackbar.Width / 2f) - (Width / 2f)), (int)Math.Round(percent * (myTrackbar.Height - Height)));
+            }catch(Exception e) {
+                Console.WriteLine("UPDATEPOS\n" + e.ToString());
+            }
         }
 
         protected override void OnMouseEnter(EventArgs e) {
-            Cursor = Cursors.SizeWE;
+            if(!myTrackbar.verticalMode)
+                Cursor = Cursors.SizeWE;
+            else
+                Cursor = Cursors.SizeNS;
+
             base.OnMouseEnter(e);
         }
 
@@ -65,19 +76,23 @@ namespace Kaiser {
 
         protected override void OnMouseMove(MouseEventArgs e) {
             if (active) {
-                int maxDist = myTrackbar.Width - Width;
-                int newLocX = Location.X;
+                int maxDist, newLoc;
 
-                newLocX += e.Location.X - eOriginalPos.X;
-                
-                if (newLocX > maxDist)
-                    newLocX = maxDist;
-                else if (newLocX < 0)
-                    newLocX = 0;
+                if (!myTrackbar.isVertical) {
+                    maxDist = myTrackbar.Width - Width;
+                    newLoc = Location.X + (e.Location.X - eOriginalPos.X);
+                } else {
+                    maxDist = myTrackbar.Height - Height;
+                    newLoc = Location.Y + (e.Location.Y - eOriginalPos.Y);
+                }
 
-                UpdatePos(newLocX);
-                percentage = (int)(Math.Round((newLocX + 1f) / (maxDist + 1f), 2) * 100);
-                Console.WriteLine(percentage);
+                if (newLoc > maxDist)
+                    newLoc = maxDist;
+                else if (newLoc < 0)
+                    newLoc = 0;
+
+                percentage = (int)(Math.Round((newLoc + 1f) / (maxDist + 1f), 2) * 100);
+                UpdatePos();
             }
 
             base.OnMouseMove(e);

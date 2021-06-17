@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,18 @@ namespace Kaiser {
     public partial class CustomTrackbar: PictureBox {
 
         Tracker track;
+        public bool verticalMode = false;
+
+        [DefaultValue(false)]
+        public bool isVertical {
+            get {
+                return this.verticalMode;
+            }
+            set {
+                this.verticalMode = value;
+            }
+        }
+
         public CustomTrackbar() {
             this.DoubleBuffered = true;
             this.Image = Properties.Resources.trackbar;
@@ -19,8 +32,7 @@ namespace Kaiser {
         }
 
         protected override void OnSizeChanged(EventArgs e) {
-            int x = (int)Math.Round((track.percentage / 100f) * (Width - track.Width));
-            track.UpdatePos(x);
+            track.UpdatePos();
             base.OnSizeChanged(e);
         }
 
